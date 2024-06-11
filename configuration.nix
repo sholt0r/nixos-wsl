@@ -17,21 +17,43 @@
   wsl.defaultUser = "jstaples";
 
   environment.systemPackages = [
-    pkgs.rustup
-    pkgs.git
-    pkgs.neovim
+    pkgs.bfg-repo-cleaner
     pkgs.curl
     pkgs.eza
+    pkgs.gcc
+    pkgs.gh
+    pkgs.git
+    pkgs.git-filter-repo
     pkgs.go
+    pkgs.neovim
     pkgs.nodejs_22
     pkgs.python3
-    pkgs.gh
+    pkgs.rustup
     pkgs.starship
+    pkgs.stow
     pkgs.tshark
     pkgs.unzip
+    pkgs.wslu
+    pkgs.zig
     pkgs.zsh
   ];
-  
+
+  users.users.jstaples = {
+    isNormalUser = true;
+    home = "/home/jstaples";
+    description = "John Staples";
+    extraGroups = [ "wheel" "networkmanager" ];
+    shell = pkgs.zsh;
+  };
+
+  programs.zsh.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
