@@ -17,8 +17,11 @@
   wsl.defaultUser = "jstaples";
 
   environment.systemPackages = [
+    pkgs.ansible
     pkgs.bfg-repo-cleaner
+    pkgs.clang
     pkgs.curl
+    pkgs.dig
     pkgs.eza
     pkgs.gcc
     pkgs.gh
@@ -26,13 +29,18 @@
     pkgs.git-filter-repo
     pkgs.go
     pkgs.neovim
+    pkgs.nix-search-cli
     pkgs.nodejs_22
+    pkgs.openssl
     pkgs.python3
     pkgs.rustup
     pkgs.starship
     pkgs.stow
+    pkgs.tmux
     pkgs.tshark
     pkgs.unzip
+    pkgs.wget2
+    pkgs.whois
     pkgs.wslu
     pkgs.zig
     pkgs.zsh
