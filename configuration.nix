@@ -15,6 +15,7 @@
 
   wsl.enable = true;
   wsl.defaultUser = "jstaples";
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = [
     pkgs.ansible
@@ -28,11 +29,13 @@
     pkgs.git
     pkgs.git-filter-repo
     pkgs.go
+    pkgs.gnumake
     pkgs.neovim
     pkgs.nix-search-cli
     pkgs.nodejs_22
     pkgs.openssl
     pkgs.python3
+    pkgs.ruby
     pkgs.rustup
     pkgs.starship
     pkgs.stow
