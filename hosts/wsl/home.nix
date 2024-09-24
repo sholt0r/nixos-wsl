@@ -20,7 +20,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    pkgs.zsh-vi-mode
     pkgs.ansible
     pkgs.bfg-repo-cleaner
     pkgs.gh
@@ -31,6 +30,7 @@
     pkgs.rustup
     pkgs.starship
     pkgs.zig
+    pkgs.zsh-vi-mode
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

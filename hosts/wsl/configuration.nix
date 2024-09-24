@@ -5,20 +5,13 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, home-manager, ... }:
 
 {
   imports = [
     # include NixOS-WSL modules
-    <nixos-wsl/modules>
-    inputs.home-manager.nixosModules.default
     inputs.nixos-wsl.nixosModules.default
   ];
-
-  wsl = {
-    enable = true;
-    defaultUser = "jstaples";
-  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -67,7 +60,7 @@
 
   security.sudo.wheelNeedsPassword = true;
 
-  home-manager = {
+  home-manager.nixosModules = {
     extraSpecialArgs = { inherit inputs; };
     useGlobalPkgs = true;
     useUserPackages = true;
