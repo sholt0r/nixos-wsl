@@ -8,11 +8,6 @@
 { pkgs, inputs, ... }:
 
 {
-  imports = [
-    # include NixOS-WSL modules
-    inputs.nixos-wsl.nixosModules.default
-  ];
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = [
@@ -47,7 +42,10 @@
 
   nixos-wsl = {
     system.stateVersion = "24.05";
-    wsl.enable = true;
+    wsl = {
+      enable = true;
+      defaultUser = "jstaples";
+    };
   };
 
   users.users.jstaples = {

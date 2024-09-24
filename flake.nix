@@ -32,13 +32,6 @@
           specialArgs = {inherit system inputs pkgs;};
           modules = [
             ./hosts/wsl/configuration.nix
-            nixos-wsl.nixosModules.default {
-              system.stateVersion = "23.11";
-              wsl = {
-                enable = true;
-                defaultUser = "jstaples";
-              };
-            }
           ];
         };
 
