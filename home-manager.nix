@@ -1,0 +1,4 @@
+{ lib, config, inputs, ...}: {
+  config = {
+  }
+}
