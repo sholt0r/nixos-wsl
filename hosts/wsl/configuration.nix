@@ -15,16 +15,11 @@
     inputs.nixos-wsl.nixosModules.default
   ];
 
-<<<<<<< HEAD:configuration.nix
-  wsl.enable = true;
-  wsl.defaultUser = "jstaples";
-=======
   wsl = {
     enable = true;
     defaultUser = "jstaples";
   };
 
->>>>>>> 07e56f8 (Flakes):hosts/wsl/configuration.nix
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = [
@@ -35,23 +30,17 @@
     pkgs.gcc
     pkgs.git
     pkgs.git-filter-repo
-<<<<<<< HEAD:configuration.nix
     pkgs.go
     pkgs.gnumake
     pkgs.neovim
-=======
->>>>>>> 07e56f8 (Flakes):hosts/wsl/configuration.nix
     pkgs.nix-search-cli
     pkgs.nixfmt-rfc-style
     pkgs.openssl
-<<<<<<< HEAD:configuration.nix
     pkgs.python3
     pkgs.ruby
     pkgs.rustup
     pkgs.starship
-=======
     pkgs.powershell
->>>>>>> 07e56f8 (Flakes):hosts/wsl/configuration.nix
     pkgs.stow
     pkgs.tmux
     pkgs.tshark
@@ -80,9 +69,9 @@
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
-    users = {
-      "jstaples" = import ./home.nix;
-    };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.jstaples = import ./home.nix;
   };
 
   programs.neovim = {

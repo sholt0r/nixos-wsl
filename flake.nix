@@ -18,11 +18,6 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/wsl/configuration.nix
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.jstaples = import ./hosts/wsl/home.nix;
-          }
           nixos-wsl.nixosModules.default {
             system.stateVersion = "23.11";
             wsl.enable = true;
