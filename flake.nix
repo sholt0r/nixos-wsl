@@ -15,32 +15,41 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }@inputs: {
-    nixosConfigurations = {
+  outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }@inputs: 
+    let
+      system = "x86_64-linux";
 
-      wsl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./hosts/wsl/configuration.nix
-          nixos-wsl.nixosModules.default {
-            system.stateVersion = "23.11";
-            wsl = {
-              enable = true;
-              defaultUser = "jstaples";
-            };
-          }
-        ];
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
       };
 
-      desktop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./hosts/desktop/configuration.nix
-        ];
-      };
+    in
+    {
+      nixosConfigurations = {
 
+        wsl = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit system inputs pkgs;};
+          modules = [
+            ./hosts/wsl/configuration.nix
+            nixos-wsl.nixosModules.default {
+              system.stateVersion = "23.11";
+              wsl = {
+                enable = true;
+                defaultUser = "jstaples";
+              };
+            }
+          ];
+        };
+
+        desktop = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit system inputs pkgs;};
+          modules = [
+            ./hosts/desktop/configuration.nix
+          ];
+        };
+
+      };
     };
-  };
-}
+  }
+
