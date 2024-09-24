@@ -1,23 +1,5 @@
 {
-<<<<<<< HEAD
-  description = "WSL Flake";
-
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-  };
-
-  outputs = { self, nixpkgs, nixos-wsl, ... }: {
-    nixosConfigurations = {
-      system = "x86_64-linux";
-      modules = [
-        nixos-wsl.nixosModules.default {
-          system.stateVersion = "23.11";
-          wsl.enable = true;
-        };
-      ];
-=======
-  description = "Nixos config flake";
+  description = "Sholtor's Flakes";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -29,26 +11,34 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }@inputs: {
     nixosConfigurations = {
-      
       wsl = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/wsl/configuration.nix
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.jstaples = import ./hosts/wsl/home.nix;
+          }
+          nixos-wsl.nixosModules.default {
+            system.stateVersion = "23.11";
+            wsl.enable = true;
+          }
         ];
       };
 
       desktop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/desktop/configuration.nix
         ];
       };
       
-      homeManagerModules.default = ./homeManagerModules;
 
->>>>>>> 07e56f8 (Flakes)
     };
   };
 }
