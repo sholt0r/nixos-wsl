@@ -1,4 +1,4 @@
-{pkgs, lib, ...}: {
+{pkgs, lib, config, ...}: {
   
   options = {
     neovim.enable = lib.mkEnableOption "enables neovim";

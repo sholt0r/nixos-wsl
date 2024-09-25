@@ -32,7 +32,7 @@
 
     in
     {
-      pkgs = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
       overlays = import ./overlays {inherit inputs;};
       nixosModules = import ./modules/nixos;
@@ -59,7 +59,7 @@
       };
 
       homeConfigurations = {
-        "jstaples@nix" = home-manager.lib.homeManagerConfiguration {
+        "jstaples@nix-wsl-badmobo" = home-manager.lib.homeManagerConfiguration {
 	  pkgs = nixpkgs.legacyPackages.x86_64-linux;
 	  extraSpecialArgs = {inherit inputs outputs;};
 	  modules = [
