@@ -1,12 +1,21 @@
-{ pkgs, ... }:
+{ inputs, outputs, lib, config, pkgs, ... }:
 
 {
+  imports = [
+    outputs.homeManagerModules.neovim
+    outputs.homeManagerModules.starship
+    outputs.homeManagerModules.zsh
+  ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "jstaples";
   home.homeDirectory = "/home/jstaples";
   xdg.configHome = "/home/jstaples/.config/";
   xdg.dataHome = "/home/jstaples/.local/data/";
+
+  neovim.enable = true;
+  starship.enable = false;
+  zsh.enable = true;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

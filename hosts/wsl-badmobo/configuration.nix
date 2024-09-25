@@ -5,57 +5,59 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ pkgs, inputs, home-manager, ... }:
+{ pkgs, inputs, outputs, lib, config, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  environment.systemPackages = [
-    pkgs.clang
-    pkgs.curl
-    pkgs.dig
-    pkgs.eza
-    pkgs.gcc
-    pkgs.git
-    pkgs.git-filter-repo
-    pkgs.go
-    pkgs.gnumake
-    pkgs.neovim
-    pkgs.nix-search-cli
-    pkgs.nixfmt-rfc-style
-    pkgs.openssl
-    pkgs.python3
-    pkgs.ruby
-    pkgs.rustup
-    pkgs.starship
-    pkgs.powershell
-    pkgs.stow
-    pkgs.tmux
-    pkgs.tshark
-    pkgs.unzip
-    pkgs.wget2
-    pkgs.whois
-    pkgs.wslu
-    pkgs.zsh
-    pkgs.zsh-autosuggestions
+  imports = [
+    ./hardware-configuration.nix
   ];
+
+  wsl = {
+    enable = true;
+    defaultUser = "jstaples";
+  };
+
+  nixpkgs = {
+    overlays = [
+      outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.unstable-packages
+    ];
+
+    config = {
+      allowUnfree = true;
+    };
+  };
+
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
+    experimental-features = "nix-command flakes";
+    flake-registry = "";
+    nix-path = config.nix.nixPath;
+
+    channel.enable = false;
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  };
+
+  networking.hostName = "nix-wsl-badmobo";
 
   users.users.jstaples = {
     isNormalUser = true;
     home = "/home/jstaples";
     description = "John Staples";
     extraGroups = [ "wheel" "networkmanager" ];
-    shell = pkgs.zsh;
   };
 
   security.sudo.wheelNeedsPassword = true;
 
-#  home-manager.nixosModules = {
-#    extraSpecialArgs = { inherit inputs; };
-#    useGlobalPkgs = true;
-#    useUserPackages = true;
-#    users.jstaples = import ./home.nix;
-#  };
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.jstaples = import ./home.nix;
+  };
 
   programs.neovim = {
     enable = true;

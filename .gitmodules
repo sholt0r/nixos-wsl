@@ -1,0 +1,3 @@
+[submodule "modules/home-manager/nvim"]
+	path = modules/home-manager/nvim
+	url = ssh://git@github.com/sholt0r/nvim
